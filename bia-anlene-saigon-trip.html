@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sài Gòn Trip 🌆</title>
+<style>
+  :root {
+    --pink: #ff6eb4;
+    --pink-light: #ffe0f2;
+    --pink-soft: #fff0f8;
+    --purple: #a259e6;
+    --purple-light: #ede0ff;
+    --blue: #5b9cf6;
+    --blue-light: #ddeeff;
+    --red: #ff4d6d;
+    --green: #06d6a0;
+    --bg: #fdf6ff;
+    --card: #ffffff;
+    --text: #2d1b4e;
+    --muted: #8a7099;
+    --border: #eaddf5;
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    background: url('background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #ff6eb4 0%, #a259e6 50%, #5b9cf6 100%);
+    padding: 52px 24px 44px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute;
+    top: -60px; left: -60px;
+    width: 240px; height: 240px;
+    background: rgba(255,255,255,0.07); border-radius: 50%;
+  }
+  .hero::after {
+    content: ''; position: absolute;
+    bottom: -80px; right: -40px;
+    width: 300px; height: 300px;
+    background: rgba(255,255,255,0.05); border-radius: 50%;
+  }
+  .hero-emoji { font-size: 46px; display: block; margin-bottom: 10px; }
+  .hero h1 {
+    font-size: clamp(26px, 6vw, 48px);
+    color: #fff; font-weight: 700;
+    letter-spacing: -0.5px; line-height: 1.15;
+    position: relative; z-index: 1;
+  }
+  .hero-sub {
+    color: rgba(255,255,255,0.88); font-size: 15px;
+    margin-top: 10px; font-weight: 600;
+    position: relative; z-index: 1;
+  }
+  .hero-tags {
+    display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
+    margin-top: 16px; position: relative; z-index: 1;
+  }
+  .tag {
+    background: rgba(255,255,255,0.2); color: #fff;
+    border-radius: 20px; padding: 5px 14px;
+    font-size: 20px; font-weight: 600;
+    backdrop-filter: blur(4px);
+  }
+
+  /* LAYOUT */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+  .page-grid { display: grid; grid-template-columns: 1fr 340px; gap: 18px; align-items: start; }
+  @media (max-width: 980px) { .page-grid { grid-template-columns: 1fr; } }
+  .sidebar-col {
+    position: sticky;
+    top: 18px;
+    align-self: start;
+    max-height: calc(100vh - 36px);
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  @media (max-width: 980px) {
+    .sidebar-col { position: static; max-height: none; overflow: visible; }
+  }
+  .notes-textarea {
+    width: 100%;
+    min-height: 260px;
+    resize: vertical;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 12px;
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--text);
+    outline: none;
+    background: white;
+  }
+  .notes-textarea:focus { border-color: var(--purple); }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 18px; font-weight: 700;
+    color: var(--text); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-icon {
+    width: 34px; height: 34px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; font-size: 17px;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--card); border-radius: 18px; padding: 22px;
+    border: 1.5px solid var(--border); margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(162,89,230,0.07);
+  }
+
+  /* FUND */
+  .fund-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+  @media (max-width: 480px) { .fund-grid { grid-template-columns: 1fr; } }
+
+  .fund-person {
+    background: var(--pink-soft); border: 1.5px solid var(--pink-light);
+    border-radius: 12px; padding: 14px;
+  }
+  .fund-person.alt { background: var(--purple-light); border-color: #d4b3f5; }
+  .fund-head { display:flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+  .fund-label {
+    font-size: 12px; color: var(--muted); font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;
+  }
+  .fund-name {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    padding: 7px 10px;
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--text);
+    background: rgba(255,255,255,0.95);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .fund-name:focus { border-color: var(--purple); }
+  .fund-input {
+    width: 100%; border: 1.5px solid var(--border); border-radius: 9px;
+    padding: 9px 12px; font-family: var(--font); font-size: 15px; font-weight: 700;
+    color: var(--text); background: white; outline: none; transition: border-color 0.2s;
+  }
+  .fund-input:focus { border-color: var(--purple); }
+
+  .total-box {
+    background: linear-gradient(135deg, #a259e6, #ff6eb4);
+    border-radius: 12px; padding: 16px 20px; color: white;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+  }
+  .total-label { font-size: 20px; font-weight: 600; opacity: 0.9; }
+  .total-amount { font-size: 24px; font-weight: 700; }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 10px 20px; border-radius: 10px; font-family: var(--font);
+    font-size: 14px; font-weight: 700; cursor: pointer; border: none;
+    transition: all 0.18s;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary {
+    background: linear-gradient(135deg, #a259e6, #ff6eb4); color: white;
+    box-shadow: 0 4px 14px rgba(162,89,230,0.3);
+  }
+  .btn-primary:hover { box-shadow: 0 6px 18px rgba(162,89,230,0.4); transform: translateY(-1px); }
+  .btn-blue {
+    background: linear-gradient(135deg, #5b9cf6, #2ec4b6); color: white;
+    box-shadow: 0 4px 14px rgba(91,156,246,0.3);
+  }
+  .btn-blue:hover { box-shadow: 0 6px 18px rgba(91,156,246,0.4); transform: translateY(-1px); }
+  .btn-danger { background: #fff0f3; color: var(--red); border: 1.5px solid #ffd6de; }
+  .btn-danger:hover { background: #ffe0e7; }
+  .btn-sm { padding: 6px 13px; font-size: 13px; border-radius: 8px; }
+  .btn-ghost { background: var(--purple-light); color: var(--purple); border: 1.5px solid #d4b3f5; }
+  .btn-ghost:hover { background: #e0ccff; }
+
+  /* PLANS TOP */
+  .plans-top {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px; margin-bottom: 16px;
+  }
+
+  /* PLAN DETAIL VIEW */
+  .detail-wrap {
+    background: rgba(255,255,255,0.92);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 2px 12px rgba(162,89,230,0.06);
+  }
+  .detail-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .detail-title { font-size: 16px; font-weight: 800; color: var(--text); }
+  .detail-sub { font-size: 12px; color: var(--muted); font-weight: 700; margin-top: 3px; }
+  .detail-actions { display:flex; gap:8px; flex-wrap: wrap; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  @media (max-width: 680px) { .detail-grid { grid-template-columns: 1fr; } }
+
+  .days-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 14px; }
+  @media (max-width: 860px) { .days-grid { grid-template-columns: 1fr; } }
+  .day-card {
+    border-radius: 14px;
+    border: 1.5px solid var(--border);
+    background: white;
+    padding: 14px;
+  }
+  .day-title { font-weight: 900; font-size: 14px; margin-bottom: 10px; }
+  .day-section { background: var(--bg); border: 1.5px solid var(--border); border-radius: 12px; padding: 10px; margin-bottom: 10px; }
+  .day-section-title { font-size: 12px; font-weight: 900; color: var(--muted); margin-bottom: 6px; display:flex; justify-content: space-between; gap: 10px; }
+  .day-total {
+    display:flex; justify-content: space-between; align-items: center;
+    border-top: 1px dashed var(--border);
+    padding-top: 10px;
+    font-weight: 900;
+  }
+
+  /* COMPACT BUDGET TRACKING (DETAIL) */
+  .budget-track-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 860px) { .budget-track-grid { grid-template-columns: 1fr; } }
+  .budget-track-grid .activity-item { padding: 8px 10px; }
+  .budget-track-grid .act-input { padding: 6px 8px; font-size: 12.5px; }
+  .budget-track-grid .act-input.money { width: 110px; }
+  .budget-track-grid .summary-row { margin-top: 4px !important; font-size: 12px; }
+
+  /* PLANS GRID — all side by side */
+  .plans-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 16px;
+    align-items: start;
+  }
+
+  /* SINGLE PLAN CARD */
+  .plan-card {
+    background: white; border-radius: 16px;
+    border: 1.5px solid var(--border);
+    padding: 18px;
+    box-shadow: 0 2px 12px rgba(162,89,230,0.06);
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
+
+  .plan-header {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 14px; flex-wrap: wrap;
+  }
+  .plan-name-input {
+    flex: 1; min-width: 140px;
+    border: 1.5px solid var(--border); border-radius: 9px;
+    padding: 8px 12px; font-family: var(--font);
+    font-size: 14px; font-weight: 700;
+    color: var(--text); background: var(--pink-soft);
+    outline: none; transition: border-color 0.2s;
+  }
+  .plan-name-input:focus { border-color: var(--purple); }
+
+  /* ACTIVITY LIST */
+  .activity-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+  .activity-item {
+    background: var(--bg); border: 1.5px solid var(--border);
+    border-radius: 10px; padding: 10px 11px;
+    display: flex; flex-direction: column; gap: 5px;
+    animation: fadeIn 0.25s ease;
+  }
+  .act-row { display: flex; gap: 6px; align-items: center; }
+  .act-input {
+    flex: 1; border: 1.5px solid var(--border); border-radius: 7px;
+    padding: 6px 9px; font-family: var(--font); font-size: 13px; font-weight: 600;
+    color: var(--text); background: white; outline: none; transition: border-color 0.2s;
+    min-width: 0;
+  }
+  .act-input:focus { border-color: var(--purple); }
+  .act-input.money { font-weight: 700; color: var(--purple); width: 120px; flex: none; }
+  .act-desc { font-size: 12px; color: var(--muted); font-weight: 500; }
+  .icon-btn {
+    width: 28px; height: 28px; border-radius: 7px; border: none;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0; transition: all 0.15s;
+  }
+  .icon-btn:active { transform: scale(0.9); }
+  .del-btn { background: #fff0f3; color: var(--red); }
+  .del-btn:hover { background: #ffe0e7; }
+
+  /* ADD ROW */
+  .add-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  .add-inputs { display: flex; gap: 6px; }
+  .add-inputs .act-input { flex: 1; }
+  .add-inputs .act-input.money { flex: none; width: 115px; }
+
+  /* SUMMARY */
+  .summary-bar { border-top: 1.5px dashed var(--border); padding-top: 13px; }
+  .summary-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 6px; font-size: 13px;
+  }
+  .summary-label { color: var(--muted); font-weight: 600; }
+  .summary-value { font-weight: 700; font-size: 14px; }
+  .summary-total { font-size: 16px; color: var(--text); }
+  .remain-positive { color: var(--green); }
+  .remain-negative { color: var(--red); }
+  .progress-track {
+    height: 8px; background: var(--border); border-radius: 99px;
+    overflow: hidden; margin: 7px 0 3px;
+  }
+  .progress-fill {
+    height: 100%; border-radius: 99px; transition: width 0.4s ease;
+    background: linear-gradient(90deg, #a259e6, #ff6eb4);
+  }
+  .progress-fill.over { background: linear-gradient(90deg, #ff4d6d, #ff9f43); }
+  .progress-label { font-size: 11px; color: var(--muted); font-weight: 700; text-align: right; }
+
+  /* COMPARISON */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px; margin-top: 4px;
+  }
+  .compare-card {
+    border-radius: 12px; padding: 14px;
+    border: 1.5px solid var(--border); background: white; text-align: center;
+  }
+  .compare-card.best { border-color: var(--green); background: #f0fffb; }
+  .compare-name { font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 6px; }
+  .compare-amount { font-size: 18px; font-weight: 700; color: var(--text); }
+  .compare-badge {
+    display: inline-block; margin-top: 6px;
+    font-size: 11px; font-weight: 700; padding: 3px 10px;
+    border-radius: 20px; background: #d1fae5; color: #065f46;
+  }
+
+  .reset-area { text-align: center; margin-top: 24px; }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #2d1b4e; color: white; padding: 11px 22px;
+    border-radius: 10px; font-size: 14px; font-weight: 600;
+    z-index: 1000; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="hero-emoji">🌆✈️</span>
+  <h1>Bia &amp; Anlene — Sài Gòn Trip</h1>
+  <div class="hero-tags">
+    <span class="tag">📅 7 ngày</span>
+    <span class="tag">🛫 Đà Nẵng → SGN</span>
+  </div>
+</div>
+
+<div style="height:26px;"></div>
+<div class="container">
+  <div class="page-grid">
+    <div>
+      <div class="card">
+        <div class="section-title">
+          <div class="section-icon" style="background:var(--pink-light);">💰</div>
+          Quỹ chuyến đi
+        </div>
+        <div class="fund-grid" id="fund-grid"></div>
+        <div class="total-box">
+          <div>
+            <div class="total-label">Tổng quỹ</div>
+            <div class="total-amount" id="total-fund">0đ</div>
+          </div>
+          <div style="font-size:34px;opacity:0.6;">🎒</div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="saveFund()">💾 Lưu số tiền</button>
+          <button class="btn btn-blue" onclick="addContributor()">➕ Thêm người góp</button>
+          <button class="btn btn-blue" onclick="exportData()">⬇️ Xuất dữ liệu</button>
+          <button class="btn btn-ghost" onclick="document.getElementById('import-file').click()">⬆️ Nhập dữ liệu</button>
+          <input id="import-file" type="file" accept="application/json" style="display:none" onchange="importData(this.files && this.files[0]); this.value='';">
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="plans-top">
+          <div class="section-title" style="margin-bottom:0;">
+            <div class="section-icon" style="background:var(--purple-light);">🗺️</div>
+            Kế hoạch chi tiêu
+          </div>
+          <button class="btn btn-blue btn-sm" onclick="addPlan()">➕ Thêm Plan</button>
+        </div>
+        <div class="plans-grid" id="plans-grid"></div>
+        <div id="plan-detail" style="display:none;"></div>
+      </div>
+
+      <div class="card" id="compare-section" style="display:none;">
+        <div class="section-title">
+          <div class="section-icon" style="background:var(--blue-light);">📊</div>
+          So sánh các plan
+        </div>
+        <div class="compare-grid" id="compare-grid"></div>
+      </div>
+
+      <div class="reset-area">
+        <button class="btn btn-danger" onclick="resetAll()">🗑️ Reset tất cả dữ liệu</button>
+      </div>
+    </div>
+
+    <div class="sidebar-col">
+      <div class="card notes-card" id="budgets-sidebar" style="display:none;">
+        <div class="section-title">
+          <div class="section-icon" style="background:var(--purple-light);">🧾</div>
+          Các mục chính
+        </div>
+        <div id="budgets-sidebar-content" style="margin-top:2px;"></div>
+      </div>
+
+      <div class="card notes-card" id="notes-card">
+        <div class="section-title">
+          <div class="section-icon" style="background:var(--pink-soft);">📝</div>
+          Ghi chú
+        </div>
+        <textarea class="notes-textarea" id="notes" placeholder=""></textarea>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
+          <button class="btn btn-primary btn-sm" onclick="saveNotes()">💾 Lưu ghi chú</button>
+          <button class="btn btn-danger btn-sm" onclick="clearNotes()">🗑️ Xóa ghi chú</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const DEFAULT_PLANS = [
+  {
+    id: 1,
+    name: "Plan A — Bay máy bay ✈️",
+    activities: [
+      { id: 1, name: "Vé máy bay Đà Nẵng → SGN", desc: "Anlene bay vào Sài Gòn", money: 1500000 },
+      { id: 2, name: "Ăn uống 7 ngày", desc: "Bún bò, hủ tiếu, cơm tấm...", money: 3000000 },
+      { id: 3, name: "Di chuyển trong thành phố", desc: "Grab, xe buýt, xe máy", money: 1000000 },
+      { id: 4, name: "Vui chơi giải trí", desc: "Landmark81, cafe, công viên", money: 2000000 },
+      { id: 5, name: "Mua sắm lưu niệm", desc: "Bến Thành, chợ đêm", money: 800000 },
+    ]
+  }
+];
+
+let state = { fund: { people: [] }, plans: [] };
+const STORAGE_KEY = 'trip-bia-anlene-v2';
+let ui = { selectedPlanId: null };
+const NOTES_KEY = 'trip-bia-anlene-notes-v1';
+
+function load() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) state = JSON.parse(saved);
+  else state.plans = JSON.parse(JSON.stringify(DEFAULT_PLANS));
+  ensureStateShape();
+  renderFund();
+  loadNotes();
+  renderAllPlans();
+  setTimeout(() => refreshAllSummaries(), 50);
+}
+
+function loadNotes() {
+  const el = document.getElementById('notes');
+  if (!el) return;
+  el.value = localStorage.getItem(NOTES_KEY) || '';
+}
+
+function saveNotes() {
+  const el = document.getElementById('notes');
+  if (!el) return;
+  localStorage.setItem(NOTES_KEY, el.value || '');
+  showToast('✅ Đã lưu ghi chú!');
+}
+
+function clearNotes() {
+  if (!confirm('Xóa toàn bộ ghi chú?')) return;
+  localStorage.removeItem(NOTES_KEY);
+  const el = document.getElementById('notes');
+  if (el) el.value = '';
+  showToast('🗑️ Đã xóa ghi chú!');
+}
+
+function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+function fmt(n) { return Number(n).toLocaleString('vi-VN') + 'đ'; }
+function parseMoney(s) { return parseInt(String(s).replace(/[^\d]/g,'')) || 0; }
+function emptyDays() {
+  return Array.from({ length: 7 }, (_, i) => ({ day: i + 1, items: [] }));
+}
+
+function normBudgetName(s) {
+  return String(s || '')
+    .toLowerCase()
+    .replace(/→/g, '->')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function isRouteBudget(name) {
+  const n = normBudgetName(name).replace(/\s/g, '');
+  return n === 'đn->sg' || n === 'dn->sg' || n === 'sg->đn' || n === 'sg->dn';
+}
+
+function pickBudgetIdByHint(plan, hint) {
+  const budgets = plan?.budgets || [];
+  const h = normBudgetName(hint);
+  if (!h) return budgets[0]?.id ?? null;
+  const exact = budgets.find(b => normBudgetName(b.name) === h);
+  if (exact) return exact.id;
+  const partial = budgets.find(b => normBudgetName(b.name).includes(h) || h.includes(normBudgetName(b.name)));
+  return partial?.id ?? (budgets[0]?.id ?? null);
+}
+
+function migrateActivitiesToBudgets(plan) {
+  const acts = Array.isArray(plan?.activities) ? plan.activities : [];
+  if (!acts.length) return;
+  plan.budgets = acts.map((a, idx) => ({
+    id: Number(a?.id) || (Date.now() + idx),
+    name: typeof a?.name === 'string' ? a.name : `Mục ${idx + 1}`,
+    amount: Number(a?.money) || 0,
+  }));
+}
+function ensurePlanShape(plan) {
+  if (!plan || typeof plan !== 'object') return;
+
+  // Budgets (mục chính cố định)
+  if (!Array.isArray(plan.budgets) || !plan.budgets.length) {
+    migrateActivitiesToBudgets(plan);
+  }
+  if (!Array.isArray(plan.budgets) || !plan.budgets.length) {
+    plan.budgets = [
+      { id: 1, name: 'Di chuyển', amount: 0 },
+      { id: 2, name: 'Lưu trú', amount: 0 },
+      { id: 3, name: 'Ăn uống', amount: 0 },
+      { id: 4, name: 'Vui chơi', amount: 0 },
+      { id: 5, name: 'Khác', amount: 0 },
+    ];
+  }
+  plan.budgets = plan.budgets.map((b, idx) => ({
+    id: Number(b?.id) || (Date.now() + idx),
+    name: typeof b?.name === 'string' ? b.name : `Mục ${idx + 1}`,
+    amount: Number(b?.amount) || 0,
+  }));
+
+  // Days items (phát sinh theo ngày)
+  if (!Array.isArray(plan.days) || plan.days.length !== 7) {
+    plan.days = emptyDays();
+  } else {
+    // migrate old {eat/play} format if exists
+    const looksOld = plan.days.some(d => d && (typeof d.eat === 'string' || typeof d.play === 'string' || 'eatMoney' in d || 'playMoney' in d));
+    if (looksOld) {
+      plan.days = plan.days.map((d, idx) => {
+        const day = idx + 1;
+        const items = [];
+        const eatMoney = Number(d?.eatMoney) || 0;
+        const playMoney = Number(d?.playMoney) || 0;
+        const eatText = typeof d?.eat === 'string' ? d.eat.trim() : '';
+        const playText = typeof d?.play === 'string' ? d.play.trim() : '';
+        if (eatText || eatMoney) {
+          items.push({ id: Date.now() + idx * 1000 + 1, name: eatText || 'Ăn uống', money: eatMoney, budgetId: pickBudgetIdByHint(plan, 'ăn uống') });
+        }
+        if (playText || playMoney) {
+          items.push({ id: Date.now() + idx * 1000 + 2, name: playText || 'Vui chơi', money: playMoney, budgetId: pickBudgetIdByHint(plan, 'vui chơi') });
+        }
+        return { day, items };
+      });
+    } else {
+      plan.days = plan.days.map((d, idx) => ({
+        day: idx + 1,
+        items: Array.isArray(d?.items) ? d.items.map((it, j) => ({
+          id: Number(it?.id) || (Date.now() + idx * 1000 + j),
+          name: typeof it?.name === 'string' ? it.name : '',
+          money: Number(it?.money) || 0,
+          budgetId: Number(it?.budgetId) || null,
+        })) : [],
+      }));
+    }
+  }
+}
+function ensureFundShape() {
+  if (!state.fund || typeof state.fund !== 'object') state.fund = {};
+
+  // Backward compatibility: old format { bia, anlene }
+  const hasOld = Object.prototype.hasOwnProperty.call(state.fund, 'bia') || Object.prototype.hasOwnProperty.call(state.fund, 'anlene');
+  if (hasOld) {
+    const bia = Number(state.fund.bia) || 0;
+    const anlene = Number(state.fund.anlene) || 0;
+    state.fund = {
+      people: [
+        { id: 1, name: 'Bia', amount: bia },
+        { id: 2, name: 'Anlene', amount: anlene }
+      ]
+    };
+  }
+
+  if (!Array.isArray(state.fund.people)) state.fund.people = [];
+
+  if (!state.fund.people.length) {
+    state.fund.people = [
+      { id: 1, name: 'Bia', amount: 0 },
+      { id: 2, name: 'Anlene', amount: 0 }
+    ];
+  }
+
+  state.fund.people = state.fund.people.map((p, idx) => ({
+    id: Number(p?.id) || (Date.now() + idx),
+    name: typeof p?.name === 'string' ? p.name : `Người ${idx + 1}`,
+    amount: Number(p?.amount) || 0,
+  }));
+}
+function ensureStateShape() { ensureFundShape(); (state.plans || []).forEach(ensurePlanShape); }
+function getSpentTotal(plan) {
+  return (plan.days || []).reduce((s, d) => s + ((d.items || []).reduce((ss, it) => ss + (Number(it.money) || 0), 0)), 0);
+}
+function getBudgetsTotal(plan) { return (plan.budgets || []).reduce((s, b) => s + (Number(b.amount) || 0), 0); }
+function spentByBudget(plan) {
+  const map = new Map();
+  (plan.days || []).forEach(d => (d.items || []).forEach(it => {
+    const bid = it.budgetId;
+    if (!bid) return;
+    map.set(bid, (map.get(bid) || 0) + (Number(it.money) || 0));
+  }));
+  return map;
+}
+function getTotal(plan) {
+  // Tổng "kế hoạch" = tổng ngân sách mục chính (để so sánh phương án)
+  return getBudgetsTotal(plan);
+}
+function totalFund() { return (state.fund.people || []).reduce((s, p) => s + (Number(p.amount) || 0), 0); }
+function esc(s) { return String(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+/* IMPORT / EXPORT */
+function sanitizeImportedState(raw) {
+  const out = { fund: { people: [] }, plans: [] };
+  if (!raw || typeof raw !== 'object') return out;
+
+  const fund = raw.fund && typeof raw.fund === 'object' ? raw.fund : {};
+  if (Array.isArray(fund.people)) {
+    out.fund.people = fund.people.map((p, idx) => ({
+      id: Number(p?.id) || (Date.now() + idx),
+      name: typeof p?.name === 'string' ? p.name : `Người ${idx + 1}`,
+      amount: Number(p?.amount) || 0,
+    }));
+  } else {
+    // Old export compatibility
+    const bia = Number(fund.bia) || 0;
+    const anlene = Number(fund.anlene) || 0;
+    out.fund.people = [
+      { id: 1, name: 'Bia', amount: bia },
+      { id: 2, name: 'Anlene', amount: anlene }
+    ];
+  }
+
+  const plans = Array.isArray(raw.plans) ? raw.plans : [];
+  out.plans = plans.map((p, idx) => {
+    const planId = Number(p?.id) || Date.now() + idx;
+    const name = typeof p?.name === 'string' ? p.name : `Plan ${idx + 1}`;
+
+    // Budgets (new) or fallback from old activities
+    const budgetsSrc = Array.isArray(p?.budgets) ? p.budgets : null;
+    let budgets = budgetsSrc ? budgetsSrc.map((b, j) => ({
+      id: Number(b?.id) || (Date.now() + idx * 1000 + j),
+      name: typeof b?.name === 'string' ? b.name : `Mục ${j + 1}`,
+      amount: Number(b?.amount) || 0,
+    })) : [];
+
+    if (!budgets.length) {
+      const acts = Array.isArray(p?.activities) ? p.activities : [];
+      budgets = acts.map((a, j) => ({
+        id: Number(a?.id) || (Date.now() + idx * 1000 + j),
+        name: typeof a?.name === 'string' ? a.name : `Mục ${j + 1}`,
+        amount: Number(a?.money) || 0,
+      }));
+    }
+
+    // Days items (new) or keep old for migration in ensurePlanShape
+    const days = Array.isArray(p?.days) ? p.days : [];
+    const normDays = (days.length === 7 ? days : emptyDays()).map((d, k) => {
+      if (d && Array.isArray(d.items)) {
+        return {
+          day: k + 1,
+          items: d.items.map((it, t) => ({
+            id: Number(it?.id) || (Date.now() + idx * 100000 + k * 1000 + t),
+            name: typeof it?.name === 'string' ? it.name : '',
+            money: Number(it?.money) || 0,
+            budgetId: Number(it?.budgetId) || null,
+          })),
+        };
+      }
+      // old day shape is passed through and migrated later
+      return { ...d, day: k + 1 };
+    });
+
+    return { id: planId, name, budgets, days: normDays };
+  });
+
+  if (!out.plans.length) out.plans = JSON.parse(JSON.stringify(DEFAULT_PLANS));
+  return out;
+}
+
+function exportData() {
+  const payload = {
+    app: 'bia-anlene-saigon-trip',
+    version: 3,
+    exportedAt: new Date().toISOString(),
+    state,
+    notes: localStorage.getItem(NOTES_KEY) || ''
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const stamp = new Date().toISOString().slice(0,10);
+  a.href = url;
+  a.download = `bia-anlene-saigon-trip-${stamp}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  showToast('⬇️ Đã xuất file dữ liệu!');
+}
+
+function importData(file) {
+  if (!file) return;
+  if (!confirm('Nhập dữ liệu sẽ ghi đè dữ liệu hiện tại. Tiếp tục?')) return;
+  const reader = new FileReader();
+  reader.onerror = () => showToast('❌ Không đọc được file.');
+  reader.onload = () => {
+    try {
+      const text = String(reader.result || '');
+      const json = JSON.parse(text);
+      const rawState = (json && typeof json === 'object' && json.state) ? json.state : json;
+      state = sanitizeImportedState(rawState);
+      ensureStateShape();
+      save();
+      if (json && typeof json === 'object' && typeof json.notes === 'string') {
+        localStorage.setItem(NOTES_KEY, json.notes);
+      }
+      renderFund();
+      loadNotes();
+      renderAllPlans();
+      setTimeout(() => refreshAllSummaries(), 50);
+      showToast('⬆️ Nhập dữ liệu thành công!');
+    } catch (e) {
+      showToast('❌ File không đúng định dạng JSON.');
+    }
+  };
+  reader.readAsText(file);
+}
+
+/* FUND */
+function renderFund() {
+  ensureFundShape();
+  const grid = document.getElementById('fund-grid');
+  if (grid) {
+    grid.innerHTML = (state.fund.people || []).map((p, idx) => `
+      <div class="fund-person ${idx % 2 ? 'alt' : ''}">
+        <div class="fund-head">
+          <div class="fund-label">Người góp</div>
+          ${(state.fund.people.length > 1) ? `<button class="icon-btn del-btn" onclick="deleteContributor(${p.id})" title="Xóa người góp">🗑️</button>` : ''}
+        </div>
+        <input class="fund-name" value="${esc(p.name)}" placeholder="Tên..." onchange="updateContributorName(${p.id}, this.value)">
+        <div style="height:8px;"></div>
+        <input class="fund-input" value="${p.amount ? p.amount.toLocaleString('vi-VN') : ''}" placeholder="0" oninput="updateContributorAmount(${p.id}, this)">
+      </div>
+    `).join('');
+  }
+  document.getElementById('total-fund').textContent = fmt(totalFund());
+}
+
+function updateContributorName(id, val) {
+  const p = (state.fund.people || []).find(x => x.id === id);
+  if (!p) return;
+  p.name = String(val ?? '');
+  save();
+}
+
+function updateContributorAmount(id, input) {
+  const p = (state.fund.people || []).find(x => x.id === id);
+  if (!p) return;
+  const val = parseMoney(input.value);
+  p.amount = val;
+  document.getElementById('total-fund').textContent = fmt(totalFund());
+  if (input.value) { const f = val.toLocaleString('vi-VN'); if (input.value !== f) input.value = f; }
+  save();
+  refreshAllSummaries();
+}
+
+function addContributor() {
+  ensureFundShape();
+  const id = Date.now();
+  state.fund.people.push({ id, name: `Người ${state.fund.people.length + 1}`, amount: 0 });
+  save();
+  renderFund();
+  showToast('✨ Đã thêm người góp!');
+}
+
+function deleteContributor(id) {
+  if (!confirm('Xóa người góp này?')) return;
+  state.fund.people = (state.fund.people || []).filter(p => p.id !== id);
+  if (!state.fund.people.length) state.fund.people = [{ id: 1, name: 'Bia', amount: 0 }];
+  save();
+  renderFund();
+  refreshAllSummaries();
+  showToast('🗑️ Đã xóa người góp!');
+}
+
+function saveFund() {
+  document.getElementById('total-fund').textContent = fmt(totalFund());
+  save(); refreshAllSummaries(); showToast('✅ Đã lưu số tiền góp!');
+}
+
+/* ALL PLANS */
+function renderAllPlans() {
+  const grid = document.getElementById('plans-grid');
+  const detail = document.getElementById('plan-detail');
+  const side = document.getElementById('budgets-sidebar');
+
+  const selected = ui?.selectedPlanId;
+  if (selected) {
+    grid.style.display = 'none';
+    if (detail) detail.style.display = 'block';
+    if (side) side.style.display = 'block';
+    renderPlanDetail(selected);
+    renderComparison();
+    return;
+  }
+
+  grid.style.display = 'grid';
+  if (detail) detail.style.display = 'none';
+  if (side) side.style.display = 'none';
+  if (!state.plans.length) {
+    grid.innerHTML = '<p style="color:var(--muted);padding:20px;grid-column:1/-1;text-align:center;">Chưa có Plan nào.</p>';
+    renderComparison(); return;
+  }
+  grid.innerHTML = state.plans.map(p => planCardHTML(p)).join('');
+  renderComparison();
+}
+
+function planCardHTML(p) {
+  const canDel = state.plans.length > 1;
+  ensurePlanShape(p);
+  return `<div class="plan-card" id="plan-card-${p.id}">
+    <div class="plan-header">
+      <input class="plan-name-input" value="${esc(p.name)}" onchange="renamePlan(${p.id},this.value)" placeholder="Tên Plan...">
+      ${canDel ? `<button class="btn btn-danger btn-sm" onclick="deletePlan(${p.id})">🗑️</button>` : ''}
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin:-4px 0 10px;">
+      <button class="btn btn-blue btn-sm" onclick="openPlanDetail(${p.id})">📌 Chi tiết plan</button>
+    </div>
+    <div class="activity-list" id="budget-list-${p.id}">
+      ${(p.budgets || []).map(b => budgetRowHTML(p.id, b)).join('')}
+    </div>
+    <div class="summary-bar" id="summary-${p.id}"></div>
+  </div>`;
+}
+
+function openPlanDetail(id) {
+  ui.selectedPlanId = id;
+  renderAllPlans();
+  setTimeout(() => refreshAllSummaries(), 20);
+}
+
+function closePlanDetail() {
+  ui.selectedPlanId = null;
+  renderAllPlans();
+  setTimeout(() => refreshAllSummaries(), 20);
+}
+
+function budgetRowHTML(planId, b) {
+  const plan = state.plans.find(p => p.id === planId);
+  if (!plan) return '';
+  const spent = spentByBudget(plan).get(b.id) || 0;
+  const remain = (Number(b.amount) || 0) - spent;
+  const over = remain < 0;
+  return `
+    <div class="activity-item">
+      <div class="act-row">
+        <div class="act-input" style="background:var(--bg);font-weight:900;border-color:var(--border);">${esc(b.name)}</div>
+        <input class="act-input money" value="${b.amount ? Number(b.amount).toLocaleString('vi-VN') : ''}" placeholder="Tiền..." oninput="updateBudgetAmount(${planId},${b.id},this)">
+      </div>
+      <div class="summary-row" style="margin-top:6px;">
+        <span class="summary-label">Còn lại</span>
+        <span class="summary-value ${over?'remain-negative':'remain-positive'}">${over?'-':'+'}${fmt(Math.abs(remain))}</span>
+      </div>
+    </div>
+  `;
+}
+
+function updateBudgetAmount(planId, budgetId, input) {
+  const plan = state.plans.find(p => p.id === planId);
+  if (!plan) return;
+  ensurePlanShape(plan);
+  const b = (plan.budgets || []).find(x => x.id === budgetId);
+  if (!b) return;
+  const val = parseMoney(input.value);
+  b.amount = val;
+  if (input.value) { const f = val.toLocaleString('vi-VN'); if (input.value !== f) input.value = f; }
+  save();
+  renderSummary(planId);
+  renderComparison();
+  if (ui.selectedPlanId === planId) renderPlanDetail(planId);
+}
+
+function budgetOptionsHTML(plan) {
+  return (plan.budgets || []).map(b => `<option value="${b.id}">${esc(b.name)}</option>`).join('');
+}
+
+function dayItemsTotal(day) {
+  return (day.items || []).reduce((s, it) => s + (Number(it.money) || 0), 0);
+}
+
+function dayCardHTML(plan, day) {
+  const dayIdx = (Number(day?.day) || 1) - 1;
+  const total = dayItemsTotal(day);
+  const opts = budgetOptionsHTML(plan);
+  const itemsHTML = (day.items || []).map(it => {
+    const b = (plan.budgets || []).find(x => x.id === it.budgetId);
+    const bName = b ? b.name : 'Chưa chọn';
+    return `
+      <div class="activity-item" style="margin-bottom:8px;">
+        <div class="act-row">
+          <input class="act-input" value="${esc(it.name)}" placeholder="Tên..." onchange="updateDayItemText(${plan.id},${dayIdx},${it.id},this.value)">
+          <input class="act-input money" value="${it.money ? Number(it.money).toLocaleString('vi-VN') : ''}" placeholder="Chi phí" oninput="updateDayItemMoney(${plan.id},${dayIdx},${it.id},this)">
+          <button class="icon-btn del-btn" onclick="deleteDayItem(${plan.id},${dayIdx},${it.id})">🗑️</button>
+        </div>
+        <div style="margin-top:6px;display:flex;gap:8px;align-items:center;">
+          <div class="summary-label" style="flex:none;">Mục</div>
+          <select class="act-input" onchange="updateDayItemBudget(${plan.id},${dayIdx},${it.id},this.value)">
+            <option value="">-- Chọn mục --</option>
+            ${(plan.budgets || []).map(bu => `<option value="${bu.id}" ${String(bu.id)===String(it.budgetId)?'selected':''}>${esc(bu.name)}</option>`).join('')}
+          </select>
+          <div class="summary-label" style="flex:none;">Đang chọn: <b>${esc(bName)}</b></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div class="day-card">
+      <div class="day-title">📅 Ngày ${dayIdx + 1}</div>
+      ${itemsHTML || `<div style="color:var(--muted);font-weight:700;margin-bottom:10px;">Chưa có phát sinh.</div>`}
+
+      <div class="day-section">
+        <div class="day-section-title">
+          <span>➕ Thêm phát sinh</span>
+          <span style="color:var(--muted);font-weight:900;">chọn mục để trừ</span>
+        </div>
+        <div class="add-inputs">
+          <input class="act-input" id="new-item-name-${plan.id}-${dayIdx}" placeholder="Tên...">
+          <input class="act-input money" id="new-item-money-${plan.id}-${dayIdx}" placeholder="Chi phí">
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px;align-items:center;">
+          <select class="act-input" id="new-item-budget-${plan.id}-${dayIdx}">
+            <option value="">-- Chọn mục --</option>
+            ${opts}
+          </select>
+          <button class="btn btn-ghost btn-sm" onclick="addDayItem(${plan.id},${dayIdx})" style="flex:none;">➕ Thêm</button>
+        </div>
+      </div>
+
+      <div class="day-total">
+        <span>Tổng ngày ${dayIdx + 1}</span>
+        <span style="color:var(--text);">${fmt(total)}</span>
+      </div>
+    </div>
+  `;
+}
+
+function renderDaysGrid(plan) {
+  ensurePlanShape(plan);
+  return `<div class="days-grid">${(plan.days || []).map(d => dayCardHTML(plan, d)).join('')}</div>`;
+}
+
+function addDayItem(planId, dayIdx) {
+  const plan = state.plans.find(p => p.id === planId);
+  if (!plan) return;
+  ensurePlanShape(plan);
+  const nameEl = document.getElementById(`new-item-name-${planId}-${dayIdx}`);
+  const moneyEl = document.getElementById(`new-item-money-${planId}-${dayIdx}`);
+  const budgetEl = document.getElementById(`new-item-budget-${planId}-${dayIdx}`);
+  if (!nameEl || !moneyEl || !budgetEl) return;
+
+  const name = String(nameEl.value || '').trim();
+  if (!name) { showToast('⚠️ Nhập tên phát sinh trước nhé!'); return; }
+  const money = parseMoney(moneyEl.value);
+  const budgetId = Number(budgetEl.value) || null;
+  if (!budgetId) { showToast('⚠️ Chọn mục để trừ tiền nhé!'); return; }
+
+  const day = plan.days[dayIdx];
+  if (!day) return;
+  const id = Date.now();
+  day.items.push({ id, name, money, budgetId });
+  nameEl.value = '';
+  moneyEl.value = '';
+  budgetEl.value = String(budgetId);
+  save();
+  renderPlanDetail(planId);
+  renderAllPlans();
+  showToast('✅ Đã thêm phát sinh!');
+}
+
+function updateDayItemText(planId, dayIdx, itemId, val) {
+  const plan = state.plans.find(p => p.id === planId);
+  if (!plan) return;
+  const it = plan?.days?.[dayIdx]?.items?.find(x => x.id === itemId);
+  if (!it) return;
+  it.name = String(val ?? '');
+  save();
+}
+
+function updateDayItemMoney(planId, dayIdx, itemId, input) {
+  const plan = state.plans.find(p => p.id === planId);
+  if (!plan) return;
+  const it = plan?.days?.[dayIdx]?.items?.find(x => x.id === itemId);
+  if (!it) return;
+  const val = parseMoney(input.value);
+  it.money = val;
+  if (input.value) { const f = val.toLocaleString('vi-VN'); if (input.value !== f) input.value = f; }
+  save();
+  renderPlanDetail(planId);
+  renderAllPlans();
+}
+
+function updateDayItemBudget(planId, dayIdx, itemId, budgetId) {
+  const plan = state.plans.find(p => p.id === planId);
+  if (!plan) return;
+  const it = plan?.days?.[dayIdx]?.items?.find(x => x.id === itemId);
+  if (!it) return;
+  it.budgetId = Number(budgetId) || null;
+  save();
+  renderPlanDetail(planId);
+  renderAllPlans();
+}
+
+function deleteDayItem(planId, dayIdx, itemId) {
+  const plan = state.plans.find(p => p.id === planId);
+  if (!plan) return;
+  const day = plan?.days?.[dayIdx];
+  if (!day) return;
+  day.items = (day.items || []).filter(x => x.id !== itemId);
+  save();
+  renderPlanDetail(planId);
+  renderAllPlans();
+  showToast('🗑️ Đã xóa!');
+}
+
+function renderPlanDetail(planId) {
+  const plan = state.plans.find(p => p.id === planId);
+  const el = document.getElementById('plan-detail');
+  if (!plan || !el) return;
+  ensurePlanShape(plan);
+
+  const total = getTotal(plan);
+  const remain = totalFund() - total;
+  const over = remain < 0;
+  const spent = getSpentTotal(plan);
+  const spentMap = spentByBudget(plan);
+  const fixedUsed = (plan.budgets || []).reduce((s, b) => s + (isRouteBudget(b.name) ? (Number(b.amount) || 0) : 0), 0);
+  const spentDisplay = spent + fixedUsed;
+  const budgetsForSidebar = (plan.budgets || []).filter(b => !isRouteBudget(b.name));
+
+  // Render budgets sidebar (right column)
+  const sideContent = document.getElementById('budgets-sidebar-content');
+  if (sideContent) {
+    sideContent.innerHTML = `
+      <div class="summary-row" style="margin-bottom:8px;">
+        <span class="summary-label">Ngân sách</span>
+        <span class="summary-value">${fmt(total)}</span>
+      </div>
+      <div class="summary-row" style="margin-bottom:10px;">
+        <span class="summary-label">Đã dùng</span>
+        <span class="summary-value">${fmt(spentDisplay)}</span>
+      </div>
+      <div class="activity-list budget-track-grid" style="margin-bottom:0;grid-template-columns:1fr;">
+        ${budgetsForSidebar.map(b => {
+          const used = spentMap.get(b.id) || 0;
+          const r = (Number(b.amount) || 0) - used;
+          const ov = r < 0;
+          return `
+            <div class="activity-item">
+              <div class="act-row">
+                <div class="act-input" style="background:var(--bg);font-weight:900;">${esc(b.name)}</div>
+                <div class="act-input money" style="background:white;border-color:var(--border);">${fmt(used)}</div>
+              </div>
+              <div class="summary-row" style="margin-top:4px;">
+                <span class="summary-label">Còn lại</span>
+                <span class="summary-value ${ov?'remain-negative':'remain-positive'}">${ov?'-':'+'}${fmt(Math.abs(r))}</span>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }
+
+  el.innerHTML = `
+    <div class="detail-wrap">
+      <div class="detail-top">
+        <div>
+          <div class="detail-title">📌 Chi tiết: ${esc(plan.name)}</div>
+          <div class="detail-sub">
+            Ngân sách mục chính: <b>${fmt(total)}</b> · Đã dùng: <b>${fmt(spentDisplay)}</b>
+            · ${over ? '⚠️ Vượt quỹ' : '✅ Còn lại'}: <b class="${over?'remain-negative':'remain-positive'}">${over?'-':'+'}${fmt(Math.abs(remain))}</b>
+          </div>
+        </div>
+        <div class="detail-actions">
+          <button class="btn btn-ghost btn-sm" onclick="closePlanDetail()">← Quay lại</button>
+          <button class="btn btn-blue btn-sm" onclick="exportData()">⬇️ Xuất dữ liệu</button>
+        </div>
+      </div>
+
+      ${renderDaysGrid(plan)}
+    </div>
+  `;
+}
+
+function refreshAllSummaries() {
+  state.plans.forEach(p => renderSummary(p.id));
+  renderComparison();
+}
+
+function renderSummary(planId) {
+  const plan = state.plans.find(p => p.id === planId);
+  const el = document.getElementById(`summary-${planId}`);
+  if (!plan || !el) return;
+  const total = getTotal(plan);
+  const fund = totalFund();
+  const remain = fund - total;
+  const pct = fund > 0 ? Math.min((total/fund)*100, 100) : 0;
+  const over = remain < 0;
+  el.innerHTML = `
+    <div class="summary-row"><span class="summary-label">Tổng chi phí</span><span class="summary-value summary-total">${fmt(total)}</span></div>
+    <div class="progress-track"><div class="progress-fill ${over?'over':''}" style="width:${pct.toFixed(1)}%"></div></div>
+    <div class="progress-label">${pct.toFixed(0)}% quỹ đã dùng</div>
+    <div class="summary-row" style="margin-top:8px;">
+      <span class="summary-label">${over?'⚠️ Vượt quỹ':'✅ Còn lại'}</span>
+      <span class="summary-value ${over?'remain-negative':'remain-positive'}">${over?'-':'+'}${fmt(Math.abs(remain))}</span>
+    </div>`;
+}
+
+function renderComparison() {
+  const sec = document.getElementById('compare-section');
+  if (state.plans.length < 2) { sec.style.display='none'; return; }
+  sec.style.display = 'block';
+  const totals = state.plans.map(p => ({ name: p.name, total: getTotal(p) }));
+  const minTotal = Math.min(...totals.map(t=>t.total));
+  document.getElementById('compare-grid').innerHTML = totals.map(t => `
+    <div class="compare-card ${t.total===minTotal?'best':''}">
+      <div class="compare-name">${t.name.split('—').slice(-1)[0].trim()||t.name}</div>
+      <div class="compare-amount">${fmt(t.total)}</div>
+      ${t.total===minTotal?'<div class="compare-badge">💚 Rẻ nhất</div>':''}
+    </div>`).join('');
+}
+
+function addPlan() {
+  const labels = ['B','C','D','E','F','G'];
+  const id = Date.now();
+  const templatePlan = state.plans?.[state.plans.length - 1] || state.plans?.[0];
+  const templateBudgets = Array.isArray(templatePlan?.budgets) && templatePlan.budgets.length
+    ? templatePlan.budgets
+    : [
+        { id: 1, name: 'Di chuyển', amount: 0 },
+        { id: 2, name: 'Lưu trú', amount: 0 },
+        { id: 3, name: 'Ăn uống', amount: 0 },
+        { id: 4, name: 'Vui chơi', amount: 0 },
+        { id: 5, name: 'Khác', amount: 0 },
+      ];
+
+  state.plans.push({
+    id,
+    name: `Plan ${labels[state.plans.length]||state.plans.length} — Mới`,
+    budgets: templateBudgets.map((b, idx) => ({
+      id: Date.now() + idx + 1,
+      name: b.name,
+      amount: 0
+    })),
+    days: emptyDays()
+  });
+  save(); renderAllPlans();
+  setTimeout(() => refreshAllSummaries(), 20);
+  showToast('✨ Đã thêm Plan mới!');
+}
+
+function deletePlan(id) {
+  if (!confirm('Xóa Plan này?')) return;
+  state.plans = state.plans.filter(p => p.id !== id);
+  if (ui.selectedPlanId === id) ui.selectedPlanId = null;
+  save(); renderAllPlans();
+  setTimeout(() => refreshAllSummaries(), 20);
+  showToast('🗑️ Đã xóa Plan!');
+}
+
+function renamePlan(id, val) {
+  const p = state.plans.find(p => p.id === id);
+  if (p) { p.name = val; save(); renderComparison(); }
+}
+
+// (đã bỏ CRUD "hoạt động mục chính" ở màn hình ngoài: mục chính cố định, chỉ chỉnh số tiền)
+
+function resetAll() {
+  if (!confirm('Reset tất cả dữ liệu? Không thể hoàn tác!')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  state = { fund:{ people: [{ id: 1, name: 'Bia', amount: 0 }, { id: 2, name: 'Anlene', amount: 0 }] }, plans: JSON.parse(JSON.stringify(DEFAULT_PLANS)) };
+  renderFund(); renderAllPlans();
+  setTimeout(() => refreshAllSummaries(), 50);
+  showToast('🔄 Đã reset về mặc định!');
+}
+
+load();
+</script>
+</body>
+</html>
