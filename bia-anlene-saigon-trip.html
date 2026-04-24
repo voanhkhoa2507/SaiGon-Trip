@@ -1003,7 +1003,7 @@ function dayCardHTML(plan, day) {
 
       <div class="day-total">
         <span>Tổng ngày ${dayIdx + 1}</span>
-        <span style="color:var(--text);">${fmt(total)}</span>
+        <span id="day-total-${plan.id}-${dayIdx}" style="color:var(--text);">${fmt(total)}</span>
       </div>
     </div>
   `;
@@ -1056,12 +1056,85 @@ function updateDayItemMoney(planId, dayIdx, itemId, input) {
   if (!plan) return;
   const it = plan?.days?.[dayIdx]?.items?.find(x => x.id === itemId);
   if (!it) return;
-  const val = parseMoney(input.value);
+  const raw = String(input.value || '');
+  const val = parseMoney(raw);
   it.money = val;
-  if (input.value) { const f = val.toLocaleString('vi-VN'); if (input.value !== f) input.value = f; }
+  if (raw) {
+    const f = val.toLocaleString('vi-VN'); // tự thêm dấu chấm ngăn cách nghìn
+    if (input.value !== f) input.value = f;
+  }
   save();
-  renderPlanDetail(planId);
-  renderAllPlans();
+  refreshPlanDetailComputed(planId);
+}
+
+function refreshPlanDetailComputed(planId) {
+  const plan = state.plans.find(p => p.id === planId);
+  if (!plan) return;
+  ensurePlanShape(plan);
+
+  // update totals per day (không rerender cả màn hình)
+  (plan.days || []).forEach((d, idx) => {
+    const el = document.getElementById(`day-total-${planId}-${idx}`);
+    if (el) el.textContent = fmt(dayItemsTotal(d));
+  });
+
+  // update sidebar + header numbers by rerendering sidebar only
+  const total = getTotal(plan);
+  const spent = getSpentTotal(plan);
+  const fixedUsed = (plan.budgets || []).reduce((s, b) => s + (isRouteBudget(b.name) ? (Number(b.amount) || 0) : 0), 0);
+  const spentDisplay = spent + fixedUsed;
+  const remain = totalFund() - total;
+  const over = remain < 0;
+
+  const spentEl = document.getElementById('detail-spent');
+  if (spentEl) spentEl.textContent = fmt(spentDisplay);
+  const totalEl = document.getElementById('detail-total');
+  if (totalEl) totalEl.textContent = fmt(total);
+  const remainEl = document.getElementById('detail-remain');
+  if (remainEl) {
+    remainEl.textContent = `${over ? '-' : '+'}${fmt(Math.abs(remain))}`;
+    remainEl.className = over ? 'remain-negative' : 'remain-positive';
+  }
+
+  // rerender budgets sidebar content only (không ảnh hưởng input đang focus)
+  const spentMap = spentByBudget(plan);
+  const budgetsForSidebar = (plan.budgets || []).filter(b => !isRouteBudget(b.name));
+  const sideContent = document.getElementById('budgets-sidebar-content');
+  if (sideContent) {
+    sideContent.innerHTML = `
+      <div class="summary-row" style="margin-bottom:8px;">
+        <span class="summary-label">Ngân sách</span>
+        <span class="summary-value">${fmt(total)}</span>
+      </div>
+      <div class="summary-row" style="margin-bottom:10px;">
+        <span class="summary-label">Đã dùng</span>
+        <span class="summary-value">${fmt(spentDisplay)}</span>
+      </div>
+      <div class="activity-list budget-track-grid" style="margin-bottom:0;grid-template-columns:1fr;">
+        ${budgetsForSidebar.map(b => {
+          const used = spentMap.get(b.id) || 0;
+          const r = (Number(b.amount) || 0) - used;
+          const ov = r < 0;
+          return `
+            <div class="activity-item">
+              <div class="act-row">
+                <div class="act-input" style="background:var(--bg);font-weight:900;">${esc(b.name)}</div>
+                <div class="act-input money" style="background:white;border-color:var(--border);">${fmt(used)}</div>
+              </div>
+              <div class="summary-row" style="margin-top:4px;">
+                <span class="summary-label">Còn lại</span>
+                <span class="summary-value ${ov?'remain-negative':'remain-positive'}">${ov?'-':'+'}${fmt(Math.abs(r))}</span>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }
+
+  // update plan cards summaries
+  renderSummary(planId);
+  renderComparison();
 }
 
 function updateDayItemBudget(planId, dayIdx, itemId, budgetId) {
@@ -1142,8 +1215,8 @@ function renderPlanDetail(planId) {
         <div>
           <div class="detail-title">📌 Chi tiết: ${esc(plan.name)}</div>
           <div class="detail-sub">
-            Ngân sách mục chính: <b>${fmt(total)}</b> · Đã dùng: <b>${fmt(spentDisplay)}</b>
-            · ${over ? '⚠️ Vượt quỹ' : '✅ Còn lại'}: <b class="${over?'remain-negative':'remain-positive'}">${over?'-':'+'}${fmt(Math.abs(remain))}</b>
+            Ngân sách mục chính: <b id="detail-total">${fmt(total)}</b> · Đã dùng: <b id="detail-spent">${fmt(spentDisplay)}</b>
+            · ${over ? '⚠️ Vượt quỹ' : '✅ Còn lại'}: <b id="detail-remain" class="${over?'remain-negative':'remain-positive'}">${over?'-':'+'}${fmt(Math.abs(remain))}</b>
           </div>
         </div>
         <div class="detail-actions">
