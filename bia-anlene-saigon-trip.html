@@ -215,6 +215,7 @@
     border-radius: 16px;
     padding: 16px;
     box-shadow: 0 2px 12px rgba(162,89,230,0.06);
+    min-width: 0;
   }
   .detail-top {
     display: flex;
@@ -230,13 +231,14 @@
   .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   @media (max-width: 680px) { .detail-grid { grid-template-columns: 1fr; } }
 
-  .days-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 14px; }
+  .days-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 14px; width: 100%; min-width: 0; }
   @media (max-width: 860px) { .days-grid { grid-template-columns: 1fr; } }
   .day-card {
     border-radius: 14px;
     border: 1.5px solid var(--border);
     background: white;
     padding: 14px;
+    min-width: 0;
   }
   .day-title { font-weight: 900; font-size: 14px; margin-bottom: 10px; }
   .day-section { background: var(--bg); border: 1.5px solid var(--border); border-radius: 12px; padding: 10px; margin-bottom: 10px; }
@@ -249,6 +251,7 @@
   }
 
   /* DAY ITEMS (DETAIL) */
+  .day-item-main { flex-wrap: wrap; }
   .day-item-main .act-input { padding: 10px 12px; font-size: 15px; font-weight: 900; border-radius: 10px; }
   .day-item-main .act-input.money { width: 140px; font-weight: 900; }
   .day-item-meta { margin-top: 6px; display:flex; gap: 8px; align-items: center; flex-wrap: wrap; }
