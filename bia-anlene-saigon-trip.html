@@ -1103,12 +1103,16 @@ function refreshPlanDetailComputed(planId) {
   if (sideContent) {
     sideContent.innerHTML = `
       <div class="summary-row" style="margin-bottom:8px;">
-        <span class="summary-label">Ngân sách</span>
-        <span class="summary-value">${fmt(total)}</span>
+        <span class="summary-label">Tổng quỹ</span>
+        <span class="summary-value">${fmt(totalFund())}</span>
       </div>
-      <div class="summary-row" style="margin-bottom:10px;">
+      <div class="summary-row" style="margin-bottom:8px;">
         <span class="summary-label">Đã dùng</span>
         <span class="summary-value">${fmt(spentDisplay)}</span>
+      </div>
+      <div class="summary-row" style="margin-bottom:10px;">
+        <span class="summary-label">Chưa dùng</span>
+        <span class="summary-value">${fmt(Math.max(totalFund() - spentDisplay, 0))}</span>
       </div>
       <div class="activity-list budget-track-grid" style="margin-bottom:0;grid-template-columns:1fr;">
         ${budgetsForSidebar.map(b => {
@@ -1180,12 +1184,16 @@ function renderPlanDetail(planId) {
   if (sideContent) {
     sideContent.innerHTML = `
       <div class="summary-row" style="margin-bottom:8px;">
-        <span class="summary-label">Ngân sách</span>
-        <span class="summary-value">${fmt(total)}</span>
+        <span class="summary-label">Tổng quỹ</span>
+        <span class="summary-value">${fmt(totalFund())}</span>
       </div>
-      <div class="summary-row" style="margin-bottom:10px;">
+      <div class="summary-row" style="margin-bottom:8px;">
         <span class="summary-label">Đã dùng</span>
         <span class="summary-value">${fmt(spentDisplay)}</span>
+      </div>
+      <div class="summary-row" style="margin-bottom:10px;">
+        <span class="summary-label">Chưa dùng</span>
+        <span class="summary-value">${fmt(Math.max(totalFund() - spentDisplay, 0))}</span>
       </div>
       <div class="activity-list budget-track-grid" style="margin-bottom:0;grid-template-columns:1fr;">
         ${budgetsForSidebar.map(b => {
