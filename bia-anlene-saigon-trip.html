@@ -249,6 +249,14 @@
     padding-top: 10px;
     font-weight: 900;
   }
+  .day-total-sub {
+    display:flex; justify-content: space-between; align-items: baseline;
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 800;
+  }
+  .day-total-sub small { font-weight: 700; color: var(--muted); }
 
   /* DAY ITEMS (DETAIL) */
   .day-item-main { flex-wrap: wrap; }
@@ -262,8 +270,7 @@
   .day-item-meta select.act-input { padding: 7px 9px; font-size: 12px; font-weight: 800; }
   .day-add-main .act-input { padding: 9px 11px; font-size: 14px; font-weight: 800; border-radius: 10px; }
   .day-add-main select.act-input { padding: 8px 10px; font-size: 12px; font-weight: 800; }
-  .mini-select { max-width: 220px; }
-  @media (max-width: 520px) { .mini-select { max-width: 160px; } }
+  .mini-select { width: 269px; max-width: 100%; }
 
   /* COMPACT BUDGET TRACKING (DETAIL) */
   .budget-track-grid {
@@ -1037,6 +1044,13 @@ function dayCardHTML(plan, day) {
         <span>Tổng ngày ${tripDateLabel(dayIdx)}</span>
         <span id="day-total-${plan.id}-${dayIdx}" class="day-total-money ${isBad ? 'bad' : 'good'}">${fmt(total)}</span>
       </div>
+      <div class="day-total-sub">
+        <div>
+          <div>Chưa tính Homestay</div>
+          <small>(để canh “ăn + chơi” ~ 500k/ngày)</small>
+        </div>
+        <div id="day-total-nh-${plan.id}-${dayIdx}" class="day-total-money ${isBad ? 'bad' : 'good'}">${fmt(nonHome)}</div>
+      </div>
     </div>
   `;
 }
@@ -1125,6 +1139,14 @@ function refreshPlanDetailComputed(planId) {
       const isBad = nonHome > 500000;
       el.classList.toggle('bad', isBad);
       el.classList.toggle('good', !isBad);
+    }
+    const el2 = document.getElementById(`day-total-nh-${planId}-${idx}`);
+    if (el2) {
+      const nonHome = dayNonHomestayTotal(plan, d);
+      const isBad = nonHome > 500000;
+      el2.textContent = fmt(nonHome);
+      el2.classList.toggle('bad', isBad);
+      el2.classList.toggle('good', !isBad);
     }
   });
 
@@ -1272,10 +1294,7 @@ function renderPlanDetail(planId) {
       <div class="detail-top">
         <div>
           <div class="detail-title">📌 Chi tiết: ${esc(plan.name)}</div>
-          <div class="detail-sub">
-            Ngân sách mục chính: <b id="detail-total">${fmt(total)}</b> · Đã dùng: <b id="detail-spent">${fmt(spentDisplay)}</b>
-            · ${over ? '⚠️ Vượt quỹ' : '✅ Còn lại'}: <b id="detail-remain" class="${over?'remain-negative':'remain-positive'}">${over?'-':'+'}${fmt(Math.abs(remain))}</b>
-          </div>
+          <div class="detail-sub">Mỗi ngày ăn và chơi khoảng 500.000 nhoa</div>
         </div>
         <div class="detail-actions">
           <button class="btn btn-ghost btn-sm" onclick="closePlanDetail()">← Quay lại</button>
