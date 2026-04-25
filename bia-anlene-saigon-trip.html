@@ -247,6 +247,15 @@
     font-weight: 900;
   }
 
+  /* DAY ITEMS (DETAIL) */
+  .day-item-main .act-input { padding: 10px 12px; font-size: 15px; font-weight: 900; border-radius: 10px; }
+  .day-item-main .act-input.money { width: 140px; font-weight: 900; }
+  .day-item-meta { margin-top: 6px; display:flex; gap: 8px; align-items: center; }
+  .day-item-meta .summary-label { font-size: 11px; }
+  .day-item-meta select.act-input { padding: 7px 9px; font-size: 12px; font-weight: 800; }
+  .day-add-main .act-input { padding: 9px 11px; font-size: 14px; font-weight: 800; border-radius: 10px; }
+  .day-add-main select.act-input { padding: 8px 10px; font-size: 12px; font-weight: 800; }
+
   /* COMPACT BUDGET TRACKING (DETAIL) */
   .budget-track-grid {
     display: grid;
@@ -952,27 +961,31 @@ function dayItemsTotal(day) {
   return (day.items || []).reduce((s, it) => s + (Number(it.money) || 0), 0);
 }
 
+const TRIP_START_DAY = 6;
+const TRIP_START_MONTH = 5;
+function tripDateLabel(dayIdx) {
+  return `${TRIP_START_DAY + dayIdx}/${TRIP_START_MONTH}`;
+}
+
 function dayCardHTML(plan, day) {
   const dayIdx = (Number(day?.day) || 1) - 1;
   const total = dayItemsTotal(day);
   const opts = budgetOptionsHTML(plan);
   const itemsHTML = (day.items || []).map(it => {
     const b = (plan.budgets || []).find(x => x.id === it.budgetId);
-    const bName = b ? b.name : 'Chưa chọn';
     return `
       <div class="activity-item" style="margin-bottom:8px;">
-        <div class="act-row">
+        <div class="act-row day-item-main">
           <input class="act-input" value="${esc(it.name)}" placeholder="Tên..." onchange="updateDayItemText(${plan.id},${dayIdx},${it.id},this.value)">
           <input class="act-input money" value="${it.money ? Number(it.money).toLocaleString('vi-VN') : ''}" placeholder="Chi phí" oninput="updateDayItemMoney(${plan.id},${dayIdx},${it.id},this)">
           <button class="icon-btn del-btn" onclick="deleteDayItem(${plan.id},${dayIdx},${it.id})">🗑️</button>
         </div>
-        <div style="margin-top:6px;display:flex;gap:8px;align-items:center;">
+        <div class="day-item-meta">
           <div class="summary-label" style="flex:none;">Mục</div>
           <select class="act-input" onchange="updateDayItemBudget(${plan.id},${dayIdx},${it.id},this.value)">
             <option value="">-- Chọn mục --</option>
             ${(plan.budgets || []).map(bu => `<option value="${bu.id}" ${String(bu.id)===String(it.budgetId)?'selected':''}>${esc(bu.name)}</option>`).join('')}
           </select>
-          <div class="summary-label" style="flex:none;">Đang chọn: <b>${esc(bName)}</b></div>
         </div>
       </div>
     `;
@@ -980,7 +993,7 @@ function dayCardHTML(plan, day) {
 
   return `
     <div class="day-card">
-      <div class="day-title">📅 Ngày ${dayIdx + 1}</div>
+      <div class="day-title">📅 Ngày ${tripDateLabel(dayIdx)}</div>
       ${itemsHTML || `<div style="color:var(--muted);font-weight:700;margin-bottom:10px;">Chưa có phát sinh.</div>`}
 
       <div class="day-section">
@@ -988,11 +1001,11 @@ function dayCardHTML(plan, day) {
           <span>➕ Thêm phát sinh</span>
           <span style="color:var(--muted);font-weight:900;">chọn mục để trừ</span>
         </div>
-        <div class="add-inputs">
+        <div class="add-inputs day-add-main">
           <input class="act-input" id="new-item-name-${plan.id}-${dayIdx}" placeholder="Tên...">
           <input class="act-input money" id="new-item-money-${plan.id}-${dayIdx}" placeholder="Chi phí">
         </div>
-        <div style="display:flex;gap:8px;margin-top:8px;align-items:center;">
+        <div class="day-item-meta day-add-main" style="margin-top:8px;">
           <select class="act-input" id="new-item-budget-${plan.id}-${dayIdx}">
             <option value="">-- Chọn mục --</option>
             ${opts}
@@ -1002,7 +1015,7 @@ function dayCardHTML(plan, day) {
       </div>
 
       <div class="day-total">
-        <span>Tổng ngày ${dayIdx + 1}</span>
+        <span>Tổng ngày ${tripDateLabel(dayIdx)}</span>
         <span id="day-total-${plan.id}-${dayIdx}" style="color:var(--text);">${fmt(total)}</span>
       </div>
     </div>
