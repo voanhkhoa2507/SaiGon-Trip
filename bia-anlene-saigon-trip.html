@@ -255,6 +255,8 @@
   .day-item-meta select.act-input { padding: 7px 9px; font-size: 12px; font-weight: 800; }
   .day-add-main .act-input { padding: 9px 11px; font-size: 14px; font-weight: 800; border-radius: 10px; }
   .day-add-main select.act-input { padding: 8px 10px; font-size: 12px; font-weight: 800; }
+  .mini-select { max-width: 220px; }
+  @media (max-width: 520px) { .mini-select { max-width: 160px; } }
 
   /* COMPACT BUDGET TRACKING (DETAIL) */
   .budget-track-grid {
@@ -982,7 +984,7 @@ function dayCardHTML(plan, day) {
         </div>
         <div class="day-item-meta">
           <div class="summary-label" style="flex:none;">Mục</div>
-          <select class="act-input" onchange="updateDayItemBudget(${plan.id},${dayIdx},${it.id},this.value)">
+          <select class="act-input mini-select" onchange="updateDayItemBudget(${plan.id},${dayIdx},${it.id},this.value)">
             <option value="">-- Chọn mục --</option>
             ${(plan.budgets || []).map(bu => `<option value="${bu.id}" ${String(bu.id)===String(it.budgetId)?'selected':''}>${esc(bu.name)}</option>`).join('')}
           </select>
@@ -997,20 +999,20 @@ function dayCardHTML(plan, day) {
       ${itemsHTML || `<div style="color:var(--muted);font-weight:700;margin-bottom:10px;">Chưa có phát sinh.</div>`}
 
       <div class="day-section">
-        <div class="day-section-title">
-          <span>➕ Thêm phát sinh</span>
-          <span style="color:var(--muted);font-weight:900;">chọn mục để trừ</span>
-        </div>
-        <div class="add-inputs day-add-main">
-          <input class="act-input" id="new-item-name-${plan.id}-${dayIdx}" placeholder="Tên...">
-          <input class="act-input money" id="new-item-money-${plan.id}-${dayIdx}" placeholder="Chi phí">
-        </div>
-        <div class="day-item-meta day-add-main" style="margin-top:8px;">
-          <select class="act-input" id="new-item-budget-${plan.id}-${dayIdx}">
-            <option value="">-- Chọn mục --</option>
-            ${opts}
-          </select>
-          <button class="btn btn-ghost btn-sm" onclick="addDayItem(${plan.id},${dayIdx})" style="flex:none;">➕ Thêm</button>
+        <button class="btn btn-ghost btn-sm" onclick="toggleAddForm(${plan.id},${dayIdx})" style="width:100%;">➕ Thêm phát sinh</button>
+        <div id="add-form-${plan.id}-${dayIdx}" style="display:none;margin-top:10px;">
+          <div class="add-inputs day-add-main">
+            <input class="act-input" id="new-item-name-${plan.id}-${dayIdx}" placeholder="Tên...">
+            <input class="act-input money" id="new-item-money-${plan.id}-${dayIdx}" placeholder="Chi phí">
+          </div>
+          <div class="day-item-meta day-add-main" style="margin-top:8px;">
+            <div class="summary-label" style="flex:none;">Mục</div>
+            <select class="act-input mini-select" id="new-item-budget-${plan.id}-${dayIdx}">
+              <option value="">-- Chọn mục --</option>
+              ${opts}
+            </select>
+            <button class="btn btn-ghost btn-sm" onclick="addDayItem(${plan.id},${dayIdx})" style="flex:none;">➕ Thêm</button>
+          </div>
         </div>
       </div>
 
@@ -1052,7 +1054,19 @@ function addDayItem(planId, dayIdx) {
   save();
   renderPlanDetail(planId);
   renderAllPlans();
+  hideAddForm(planId, dayIdx);
   showToast('✅ Đã thêm phát sinh!');
+}
+
+function toggleAddForm(planId, dayIdx) {
+  const el = document.getElementById(`add-form-${planId}-${dayIdx}`);
+  if (!el) return;
+  el.style.display = (el.style.display === 'none' || !el.style.display) ? 'block' : 'none';
+}
+
+function hideAddForm(planId, dayIdx) {
+  const el = document.getElementById(`add-form-${planId}-${dayIdx}`);
+  if (el) el.style.display = 'none';
 }
 
 function updateDayItemText(planId, dayIdx, itemId, val) {
